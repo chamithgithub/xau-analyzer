@@ -1,4 +1,4 @@
-# news_fetcher.py
+# api/news_fetcher.py
 
 import requests
 import os
@@ -6,30 +6,25 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Load API keys from .env
+from api.fxstreet_fetcher import fetch_fxstreet_news
+
+# API keys
 NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")
 GNEWS_API_KEY = os.getenv("GNEWS_API_KEY")
 
-# Choose source: "newsapi" or "gnews"
-NEWS_SOURCE = os.getenv("NEWS_SOURCE", "newsapi").lower()
-
-# Common keywords to look for
 QUERY = "gold OR XAUUSD OR central bank OR war OR inflation OR fed OR conflict"
 
-def fetch_from_newsapi():
+def fetch_from_newsapi(limit=10):
     url = "https://newsapi.org/v2/everything"
     params = {
         "q": QUERY,
         "language": "en",
         "sortBy": "publishedAt",
-        "pageSize": 10,
+        "pageSize": limit,
         "apiKey": NEWSAPI_KEY,
     }
-
     response = requests.get(url, params=params)
     data = response.json()
-    
-    articles = data.get("articles", [])
     return [
         {
             "title": a["title"],
@@ -37,24 +32,19 @@ def fetch_from_newsapi():
             "source": a["source"]["name"],
             "publishedAt": a["publishedAt"],
             "url": a["url"]
-        }
-        for a in articles
+        } for a in data.get("articles", [])
     ]
 
-
-def fetch_from_gnews():
+def fetch_from_gnews(limit=10):
     url = "https://gnews.io/api/v4/search"
     params = {
         "q": QUERY,
         "lang": "en",
-        "max": 10,
+        "max": limit,
         "token": GNEWS_API_KEY
     }
-
     response = requests.get(url, params=params)
     data = response.json()
-    
-    articles = data.get("articles", [])
     return [
         {
             "title": a["title"],
@@ -62,26 +52,16 @@ def fetch_from_gnews():
             "source": a["source"]["name"],
             "publishedAt": a["publishedAt"],
             "url": a["url"]
-        }
-        for a in articles
+        } for a in data.get("articles", [])
     ]
 
-
-def fetch_latest_news():
-    if NEWS_SOURCE == "newsapi":
-        print("[INFO] Using NewsAPI")
+def fetch_latest_news(source="newsapi"):
+    print(f"[INFO] Using source: {source.upper()}")
+    if source == "newsapi":
         return fetch_from_newsapi()
-    elif NEWS_SOURCE == "gnews":
-        print("[INFO] Using GNews API")
+    elif source == "gnews":
         return fetch_from_gnews()
+    elif source == "fxstreet":
+        return fetch_fxstreet_news()
     else:
-        raise ValueError("Unsupported NEWS_SOURCE. Use 'newsapi' or 'gnews'.")
-
-
-# Test the module
-if __name__ == "__main__":
-    news = fetch_latest_news()
-    for article in news:
-        print(f"📰 {article['title']} ({article['source']})")
-        print(f"    {article['publishedAt']}")
-        print()
+        raise ValueError("Unsupported source. Use 'newsapi', 'gnews', or 'fxstreet'.")

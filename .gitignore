@@ -1,1 +1,57 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# Environment variables
 .env
+*.env
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# VSCode or JetBrains IDEs
+.vscode/
+.idea/
+
+# Logs & local data
+*.log
+*.sqlite3
+*.db
+*.pid
+
+# Flask/misc
+instance/
+*.pyc
+
+# macOS and Windows
+.DS_Store
+Thumbs.db
+
+# JSON log data
+data/news_log.json
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node/React if you add frontend later
+node_modules/
+build/
+
