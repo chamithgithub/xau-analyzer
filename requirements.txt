@@ -1,0 +1,6 @@
+requests
+textblob
+python-dotenv
+python-telegram-bot
+vaderSentiment
+flask
