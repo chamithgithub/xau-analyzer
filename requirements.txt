@@ -1,6 +1,7 @@
 requests
 textblob
+vaderSentiment
+feedparser
 python-dotenv
 python-telegram-bot
-vaderSentiment
 flask

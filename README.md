@@ -31,3 +31,18 @@ Copy
 Edit
 /c "E:\pactrice\python\xau-analyzer\run_main.bat"
 Finish ✔️
+
+# # web site
+cd E:\pactrice\python\xau-analyzer
+python web/app.py
+
+
+## run
+
+python main.py
+
+
+## requirements.txt install
+
+
+### 'newsapi', 'gnews', or 'fxstreet'
