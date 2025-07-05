@@ -43,3 +43,6 @@ python main.py
 
 
 ## requirements.txt install
+
+
+### 'newsapi', 'gnews', or 'fxstreet'

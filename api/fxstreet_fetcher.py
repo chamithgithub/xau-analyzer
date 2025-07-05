@@ -1,18 +1,20 @@
 # api/fxstreet_fetcher.py
+
 import feedparser
+from datetime import datetime
 
-FXSTREET_RSS = "https://www.fxstreet.com/rss/commodities"
+def fetch_fxstreet_news():
+    rss_url = "https://www.fxstreet.com/rss/news"  # General news feed
+    feed = feedparser.parse(rss_url)
 
-def fetch_fxstreet_news(limit=5):
-    feed = feedparser.parse(FXSTREET_RSS)
-    entries = feed.entries[:limit]
-    return [
-        {
-            "title": e.title,
-            "published": e.published,
-            "summary": e.summary,
-            "url": e.link,
-            "source": "FXStreet"
-        }
-        for e in entries
-    ]
+    articles = []
+    for entry in feed.entries[:10]:  # Get latest 10 entries
+        articles.append({
+            "title": entry.title,
+            "description": entry.get("summary", ""),
+            "source": "FXStreet",
+            "publishedAt": entry.published if "published" in entry else "",
+            "url": entry.link
+        })
+
+    return articles

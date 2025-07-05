@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 from api.fxstreet_fetcher import fetch_fxstreet_news
 
 # API keys
@@ -54,14 +55,15 @@ def fetch_from_gnews(limit=10):
             "url": a["url"]
         } for a in data.get("articles", [])
     ]
-
 def fetch_latest_news(source="newsapi"):
-    print(f"[INFO] Using source: {source.upper()}")
     if source == "newsapi":
+        print("[INFO] Using NewsAPI")
         return fetch_from_newsapi()
     elif source == "gnews":
+        print("[INFO] Using GNews")
         return fetch_from_gnews()
     elif source == "fxstreet":
+        print("[INFO] Using FXStreet")
         return fetch_fxstreet_news()
     else:
-        raise ValueError("Unsupported source. Use 'newsapi', 'gnews', or 'fxstreet'.")
+        raise ValueError(f"Unknown news source: {source}")
